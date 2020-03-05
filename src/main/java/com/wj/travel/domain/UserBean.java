@@ -13,16 +13,17 @@ public class UserBean {
     private String username;
     private String password;
     private String name;
-    private Date birthday;
-    private Boolean sex;
+    private String birthday;
+    private String sex;
     private String telephone;
+    private String email;
     private String code;
-    private Boolean status;
+    private String status;
 
     public UserBean() {
     }
 
-    public UserBean(Integer uid, String username, String password, String name, Date birthday, Boolean sex, String telephone, String code, Boolean status) {
+    public UserBean(Integer uid, String username, String password, String name, String birthday, String sex, String telephone, String email, String code, String status) {
         this.uid = uid;
         this.username = username;
         this.password = password;
@@ -30,6 +31,7 @@ public class UserBean {
         this.birthday = birthday;
         this.sex = sex;
         this.telephone = telephone;
+        this.email = email;
         this.code = code;
         this.status = status;
     }
@@ -81,20 +83,36 @@ public class UserBean {
         this.name = name;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
-    public Boolean getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Boolean sex) {
+    public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getTelephone() {
@@ -113,11 +131,4 @@ public class UserBean {
         this.code = code;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
 }

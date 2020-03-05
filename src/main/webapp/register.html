@@ -31,6 +31,7 @@
 				} else  {
 					$("#password").css("border", "1px solid red");
 				}
+				return flag;
 			}
 
 			function checkEmail () {
@@ -42,6 +43,7 @@
 				} else  {
 					$("#email").css("border", "1px solid red");
 				}
+				return flag;
 			}
 
 			function checkName () {
@@ -79,7 +81,7 @@
 				return flag;
 			}
 
-			function checkCode () {
+			function checkCodeNumber () {
 				// 只要有内存就ok
 				var checkCode = $("#check").val();
 				var flag = checkCode.length > 0 ? true : false;
@@ -92,6 +94,23 @@
 			}
 
 			$(function() {
+				$("#registerActionForm").submit(function () {
+					// 提交表单的校验
+				 	var checkFlag = checkUsername() && checkPassword() && checkEmail() && checkName() && checkPhoneNumber() && checkBirthday() && checkCodeNumber();
+					if (checkFlag) {
+						$.post("registerServlet", $(this).serialize(), function(data){
+							//处理服务器响应的数据  data  {flag:true,errorMsg:"注册失败"}
+							if(data.flag){
+								//注册成功，跳转成功页面
+								location.href="register_ok.html";
+							}else{
+								//注册失败,给errorMsg添加提示信息
+								$("#errorMsg").html(data.errorMsg);
+							}
+						});
+					}
+					return false;
+				});
 
 				// 失去焦点的核对
 				$("#username").blur(checkUsername);
@@ -100,19 +119,7 @@
 				$("#name").blur(checkName);
 				$("#telephone").blur(checkPhoneNumber);
 				$("#birthday").blur(checkBirthday);
-				$("#check").blur(checkCode);
-
-				$("#registerForm").submit(function () {
-					// 提交表单的校验
-					var flag = checkUsername() && checkPassword() && checkEmail() && checkName() && checkPhoneNumber() && checkBirthday() && checkCode();
-					if (flag) {
-						$.post("registerServlet", $(this).serialize(), function (data, status) {
-
-
-						})
-					}
-					return flag;
-				});
+				$("#check").blur(checkCodeNumber);
 			});
 
 		</script>
@@ -131,7 +138,10 @@
     			<div class="rg_form_center">
 					
 					<!--注册表单-->
-    				<form id="registerForm">
+    				<form id="registerActionForm">
+
+						<div id="errorMsg" style="color:red; text-align: center;"></div>
+
 						<!--提交处理请求的标识符-->
 						<input type="hidden" name="action" value="register">
     					<table style="margin-top: 25px;">

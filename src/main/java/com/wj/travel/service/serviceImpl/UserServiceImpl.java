@@ -15,8 +15,13 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao = new UserDaoImpl();
     @Override
     public boolean register(UserBean userBean) {
-
-        
-        return true;
+        // 首先去查询数据，如果有相关的人员就不能进行保存了
+        UserBean findUser = userDao.findUserByUsername(userBean.getUsername());
+        if (findUser != null) {
+            return false;
+        }
+        // 如果没有找到就将数据保存到本地去
+        Boolean flag = userDao.saveUserInfo(userBean);
+        return flag;
     }
 }

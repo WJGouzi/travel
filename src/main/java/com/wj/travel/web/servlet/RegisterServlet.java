@@ -1,5 +1,7 @@
 package com.wj.travel.web.servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wj.travel.domain.ResultInfo;
 import com.wj.travel.domain.UserBean;
 import com.wj.travel.service.UserService;
 import com.wj.travel.service.serviceImpl.UserServiceImpl;
@@ -10,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -26,7 +29,24 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=utf-8");
+        // 验证码的处理
+        String checkCode = request.getParameter("check");
+        HttpSession session = request.getSession();
+        String checkCodeNumber = (String) session.getAttribute("checkCodeNumber");
+        System.out.println(checkCode + ":" + checkCodeNumber);
+        session.removeAttribute("checkCodeNumber");
+        if (checkCodeNumber == null || !checkCodeNumber.equalsIgnoreCase(checkCode)) {
+            ResultInfo resultInfo = new ResultInfo();
+            resultInfo.setErrorMsg("验证码错误");
+            resultInfo.setFlag(false);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(resultInfo);
+            response.getWriter().write(json);
+            return;
+        }
 
+        // 用户信息的处理
         Map<String, String[]> parameterMap = new HashMap<>(request.getParameterMap());
         UserBean userBean = new UserBean();
         try {
@@ -39,9 +59,13 @@ public class RegisterServlet extends HttpServlet {
 
         UserService userService = new UserServiceImpl();
         boolean flag = userService.register(userBean);
+        System.out.println(flag);
+        ResultInfo resultInfo = new ResultInfo();
         if (flag) {
-
+            resultInfo.setFlag(true);
         } else {
+            resultInfo.setFlag(false);
+            resultInfo.setErrorMsg("注册失败");
 
         }
 

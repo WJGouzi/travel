@@ -25,4 +25,25 @@ public class UserDaoImpl implements UserDao {
             return null;
         }
     }
+
+    @Override
+    public Boolean saveUserInfo(UserBean userBean) {
+        try {
+            String sql = "insert into tab_user(username, password, name, birthday, sex, telephone, email) " +
+                    "values(?, ?, ?, ?, ?, ?, ?)";
+            jdbcTemplate.update(sql,
+                                userBean.getUsername(),
+                                userBean.getPassword(),
+                                userBean.getName(),
+                                userBean.getBirthday(),
+                                userBean.getSex(),
+                                userBean.getTelephone(),
+                                userBean.getEmail()
+                                );
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
