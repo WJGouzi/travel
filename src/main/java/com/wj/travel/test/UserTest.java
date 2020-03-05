@@ -26,8 +26,15 @@ public class UserTest {
 
     @Test
     public void saveUser() {
-        UserBean userBean = new UserBean(null, "wj", "123", "wangjun", "2020-02-21", "0", "1243534122", "wj@qq.com", null, null);
+        UserBean userBean = new UserBean(null, "wj", "123", "wangjun", "2020-02-21", "0", "1243534122", "wj@qq.com", "N", "casda12012352sc");
         boolean flag = userService.register(userBean);
         System.out.println(flag);
+    }
+
+    @Test
+    public void changeUserStatus() {
+        UserBean userBean = new UserBean(null, "wj", "123", "wangjun", "2020-02-21", "0", "1243534122", "wj@qq.com", "N", "casda12012352sc");
+        boolean activeUser = userService.activeUser(userBean.getCode());
+        System.out.println(activeUser);
     }
 }

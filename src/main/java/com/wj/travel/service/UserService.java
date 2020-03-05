@@ -16,4 +16,12 @@ public interface UserService {
      * @return
      */
     boolean register(UserBean userBean);
+
+    /**
+     * 用户激活
+     * @param code
+     * @return
+     */
+    boolean activeUser(String code);
+
 }

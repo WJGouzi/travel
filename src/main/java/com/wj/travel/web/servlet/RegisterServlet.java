@@ -66,10 +66,10 @@ public class RegisterServlet extends HttpServlet {
         } else {
             resultInfo.setFlag(false);
             resultInfo.setErrorMsg("注册失败");
-
         }
-
-
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(resultInfo);
+        response.getWriter().write(json);
     }
 
     @Override

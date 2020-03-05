@@ -23,7 +23,7 @@ public class UserBean {
     public UserBean() {
     }
 
-    public UserBean(Integer uid, String username, String password, String name, String birthday, String sex, String telephone, String email, String code, String status) {
+    public UserBean(Integer uid, String username, String password, String name, String birthday, String sex, String telephone, String email, String status, String code) {
         this.uid = uid;
         this.username = username;
         this.password = password;

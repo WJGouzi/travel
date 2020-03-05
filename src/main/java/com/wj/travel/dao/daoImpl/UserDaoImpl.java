@@ -29,8 +29,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Boolean saveUserInfo(UserBean userBean) {
         try {
-            String sql = "insert into tab_user(username, password, name, birthday, sex, telephone, email) " +
-                    "values(?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into tab_user(username, password, name, birthday, sex, telephone, email, status, code) " +
+                    "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             jdbcTemplate.update(sql,
                                 userBean.getUsername(),
                                 userBean.getPassword(),
@@ -38,8 +38,34 @@ public class UserDaoImpl implements UserDao {
                                 userBean.getBirthday(),
                                 userBean.getSex(),
                                 userBean.getTelephone(),
-                                userBean.getEmail()
+                                userBean.getEmail(),
+                                userBean.getStatus(),
+                                userBean.getCode()
                                 );
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public UserBean findUserByUserCode(String code) {
+        try {
+            String sql = "select * from tab_user where code = ?";
+            UserBean userBean = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<UserBean>(UserBean.class), code);
+            return userBean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    //SELECT * FROM tab_user WHERE code = 'ff61d8160c434883afb06f7f40b48e01'
+    @Override
+    public boolean changeUserStatus(UserBean user, String status) {
+        try {
+            String sql = "update tab_user set status = ? where code = ?";
+            jdbcTemplate.update(sql, status, user.getCode());
             return true;
         } catch (Exception e) {
             e.printStackTrace();

@@ -23,4 +23,17 @@ public interface UserDao {
      */
     Boolean saveUserInfo(UserBean userBean);
 
+    /**
+     * 根据userCode找到用户
+     * @param code
+     * @return
+     */
+    UserBean findUserByUserCode(String code);
+
+    /**
+     * 修改用户的status
+     * @param status
+     * @return
+     */
+    boolean changeUserStatus(UserBean user, String status);
 }
