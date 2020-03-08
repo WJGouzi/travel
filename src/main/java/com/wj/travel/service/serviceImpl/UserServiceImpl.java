@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
         Boolean flag = userDao.saveUserInfo(userBean);
         if (flag) {
             /// 成功才发生邮件
-            String link = "<a href='http://www.wangjun.com:9090/travel/activeUserServlet?code="+ userBean.getCode() +"'>请点击进行链接进行账户的激活</a>";
+            String link = "<a href='http://www.wangjun.com:9090/travel/userBase/activeUserServlet?code="+ userBean.getCode() +"'>请点击进行链接进行账户的激活</a>";
             MailUtils.sendMail(userBean.getEmail(), link, "账户激活邮件");
         }
         return flag;
@@ -44,5 +44,12 @@ public class UserServiceImpl implements UserService {
         }
         boolean flag = userDao.changeUserStatus(user, "Y");
         return flag;
+    }
+
+    @Override
+    public UserBean login(String username, String password) {
+        /// 就是查找用户
+        UserBean userBean = userDao.findUserByUsernameAndPassword(username, password);
+        return userBean;
     }
 }

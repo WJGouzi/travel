@@ -10,14 +10,14 @@
 
 		<script>
 
-			function checkUsername() {
-				var username = $("#username").val();
-				var reg_username = /^\w{6,20}$/;
-				var flag = reg_username.test(username);
+			function checkUserId() {
+				var userId = $("#userId").val();
+				var reg_userId = /^[\w\d]{6,20}$/;
+				var flag = reg_userId.test(userId);
 				if (flag) {
-					$("#username").css("border", "");
+					$("#userId").css("border", "");
 				} else  {
-					$("#username").css("border", "1px solid red");
+					$("#userId").css("border", "1px solid red");
 				}
 				return flag;
 			}
@@ -48,12 +48,12 @@
 
 			function checkName () {
 				// 只要有内存就ok
-				var name = $("#name").val();
+				var name = $("#realName").val();
 				var flag = name.length > 0 ? true : false;
 				if (flag)  {
-					$("#name").css("border", "");
+					$("#realName").css("border", "");
 				} else  {
-					$("#name").css("border", "1px solid red");
+					$("#realName").css("border", "1px solid red");
 				}
 				return flag;
 			}
@@ -95,10 +95,11 @@
 
 			$(function() {
 				$("#registerActionForm").submit(function () {
+					debugger
 					// 提交表单的校验
-				 	var checkFlag = checkUsername() && checkPassword() && checkEmail() && checkName() && checkPhoneNumber() && checkBirthday() && checkCodeNumber();
+				 	var checkFlag = checkUserId() && checkPassword() && checkEmail() && checkName() && checkPhoneNumber() && checkBirthday() && checkCodeNumber();
 					if (checkFlag) {
-						$.post("registerServlet", $(this).serialize(), function(data){
+						$.post("userBase/registerServlet", $(this).serialize(), function(data){
 							//处理服务器响应的数据  data  {flag:true,errorMsg:"注册失败"}
 							if(data.flag){
 								//注册成功，跳转成功页面
@@ -113,10 +114,10 @@
 				});
 
 				// 失去焦点的核对
-				$("#username").blur(checkUsername);
+				$("#username").blur(checkUserId);
 				$("#password").blur(checkPassword);
 				$("#email").blur(checkEmail);
-				$("#name").blur(checkName);
+				$("#realName").blur(checkName);
 				$("#telephone").blur(checkPhoneNumber);
 				$("#birthday").blur(checkBirthday);
 				$("#check").blur(checkCodeNumber);
@@ -144,10 +145,10 @@
     					<table style="margin-top: 25px;">
     						<tr>
     							<td class="td_left">
-    								<label for="username">用户名</label>
+    								<label for="userId">用户名</label>
     							</td>
     							<td class="td_right">
-    								<input type="text" id="username" name="username" placeholder="请输入账号">
+    								<input type="text" id="userId" name="username" placeholder="请输入账号">
     							</td>
     						</tr>
     						<tr>
@@ -168,10 +169,10 @@
     						</tr>
     						<tr>
     							<td class="td_left">
-    								<label for="name">姓名</label>
+    								<label for="realName">姓名</label>
     							</td>
     							<td class="td_right">
-    								<input type="text" id="name" name="name" placeholder="请输入真实姓名">
+    								<input type="text" id="realName" name="name" placeholder="请输入真实姓名">
     							</td>
     						</tr>
     						<tr>

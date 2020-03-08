@@ -15,6 +15,7 @@ import java.io.IOException;
  * @Package : ${PACKAGE_NAME}
  * @Author : Created By wangjun, Copyright © wangjun All Rights Reserved
  * @Date : 2020/3/5 21:23
+ * 不再使用(逻辑移到UserBaseServlet中)
  **/
 @WebServlet("/activeUserServlet")
 public class ActiveUserServlet extends HttpServlet {

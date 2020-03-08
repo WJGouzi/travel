@@ -2,6 +2,9 @@ package com.wj.travel.web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wj.travel.domain.ResultInfo;
+import com.wj.travel.domain.UserBean;
+import com.wj.travel.service.UserService;
+import com.wj.travel.service.serviceImpl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,12 +36,30 @@ public class LoginServlet extends HttpServlet {
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(resultInfo);
             response.getWriter().write(json);
+            return;
         }
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
-
+        UserService userService = new UserServiceImpl();
+        UserBean userBean = userService.login(username, password);
+        ResultInfo resultInfo = new ResultInfo();
+        if (userBean == null) {
+            resultInfo.setFlag(false);
+            resultInfo.setErrorMsg("登录失败");
+        } else {
+            if (userBean.getStatus().equalsIgnoreCase("y")) {
+                resultInfo.setFlag(true);
+                // 将用户信息存储在session中
+                session.setAttribute("userInfo", userBean);
+            } else {
+                resultInfo.setFlag(false);
+                resultInfo.setErrorMsg("账户尚未激活");
+            }
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(resultInfo);
+        response.getWriter().write(json);
     }
 
     @Override

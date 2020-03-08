@@ -24,4 +24,11 @@ public interface UserService {
      */
     boolean activeUser(String code);
 
+    /**
+     * 登录
+     * @param username
+     * @param password
+     * @return
+     */
+    UserBean login(String username, String password);
 }

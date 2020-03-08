@@ -37,4 +37,11 @@ public class UserTest {
         boolean activeUser = userService.activeUser(userBean.getCode());
         System.out.println(activeUser);
     }
+
+    @Test
+    public void findUserByLoginProperties () {
+        UserBean wj = userDao.findUserByUsernameAndPassword("wj", "123");
+        System.out.println(wj);
+    }
+
 }

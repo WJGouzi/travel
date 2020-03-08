@@ -15,9 +15,26 @@
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
       <!--导入angularJS文件-->
-    <script src="js/angular.min.js"></script>
+<!--    <script src="js/angular.min.js"></script>-->
 	<!--导入jquery-->
 	<script src="js/jquery-3.3.1.js"></script>
+
+	<script>
+		function submitAction() {
+			var form = $("#loginForm");
+			$.post("userBase/loginServlet", form.serialize(), function (data) {
+				var errorMsg = $("#errorMsg");
+				if (data.flag) {
+					errorMsg.css("display", "none");
+					location.href = "index.html";
+				} else {
+					errorMsg.html(data.errorMsg);
+					errorMsg.css("display", "");
+				}
+			});
+		}
+	</script>
+
 </head>
 
 <body>
@@ -25,7 +42,7 @@
 <div id="header"></div>
     <!-- 头部 end -->
     <section id="login_wrap">
-        <div class="fullscreen-bg" style="background: url(images/login_bg.png);height: 532px;">
+        <div class="fullscreen-bg" style="background: url(images/login_bg.png) no-repeat ;height: 532px;">
         	
         </div>
         <div class="login-box">
@@ -34,31 +51,30 @@
         		<span>欢迎登录黑马旅游账户</span>
         	</div>
         	<div class="login_inner">
-				
 				<!--登录错误提示消息-->
         		<div id="errorMsg" class="alert alert-danger" style="display: none"></div>
 				<form id="loginForm" action="" method="post" accept-charset="utf-8">
-        			<input type="hidden" name="action" value="login"/>
+					<input type="hidden" name="action" value="login"/>
 					<input name="username" type="text" placeholder="请输入账号" autocomplete="off">
-        			<input name="password" type="text" placeholder="请输入密码" autocomplete="off">
-        			<div class="verify">
-					<input name="check" type="text" placeholder="请输入验证码" autocomplete="off">
-					<span><img src="newCheckCodeServlet" alt="" onclick="changeCheckCode(this)"></span>
-					<script type="text/javascript">
-						//图片点击事件
-						function changeCheckCode(img) {
-							img.src="checkCode?"+new Date().getTime();
-						}
-					</script>
-			</div>
-			<div class="submit_btn">
-        				<button type="button">登录</button>
-        				<div class="auto_login">
-        					<input type="checkbox" name="" class="checkbox">
-        					<span>自动登录</span>
-        				</div>        				
-        			</div>        			       		
-        		</form>
+					<input name="password" type="text" placeholder="请输入密码" autocomplete="off">
+					<div class="verify">
+						<input name="check" type="text" placeholder="请输入验证码" autocomplete="off">
+						<span><img src="newCheckCodeServlet" alt="" onclick="changeCheckCode(this)"></span>
+						<script type="text/javascript">
+							//图片点击事件
+							function changeCheckCode(img) {
+								img.src = "newCheckCodeServlet?time=" + new Date().getTime();
+							}
+						</script>
+					</div>
+					<div class="submit_btn">
+						<button type="button" onclick="submitAction()">登录</button>
+						<div class="auto_login">
+							<input type="checkbox" name="" class="checkbox">
+							<span>自动登录</span>
+						</div>
+					</div>
+				</form>
         		<div class="reg">没有账户？<a href="javascript:;">立即注册</a></div>
         	</div>
         </div>

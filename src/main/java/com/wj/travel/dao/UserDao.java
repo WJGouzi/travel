@@ -36,4 +36,12 @@ public interface UserDao {
      * @return
      */
     boolean changeUserStatus(UserBean user, String status);
+
+    /**
+     * 根据用户名和用户密码查找用户
+     * @param username
+     * @param password
+     * @return
+     */
+    UserBean findUserByUsernameAndPassword(String username, String password);
 }

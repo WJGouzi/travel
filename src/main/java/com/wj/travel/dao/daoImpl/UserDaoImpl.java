@@ -6,6 +6,9 @@ import com.wj.travel.utils.JDBCUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @Project : travel
  * @Package : com.wj.travel.dao.daoImpl
@@ -18,8 +21,13 @@ public class UserDaoImpl implements UserDao {
     public UserBean findUserByUsername(String username) {
         try {
             String sql = "select * from tab_user where username = ?";
-            UserBean userBean = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<UserBean>(UserBean.class), username);
-            return userBean;
+            //UserBean userBean = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<UserBean>(UserBean.class), username);
+            List<UserBean> userbeans = jdbcTemplate.query(sql, new BeanPropertyRowMapper<UserBean>(UserBean.class), username);
+            if (userbeans.size() > 0) {
+                return userbeans.get(0);
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -71,5 +79,19 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public UserBean findUserByUsernameAndPassword(String username, String password) {
+
+        try {
+            String sql = "select * from tab_user where username = ? and password = ?";
+            UserBean userBean = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<UserBean>(UserBean.class), username, password);
+            return userBean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }
