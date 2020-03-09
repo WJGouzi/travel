@@ -6,6 +6,7 @@ import com.wj.travel.domain.CategoryBean;
 import com.wj.travel.service.CategoryService;
 import com.wj.travel.utils.JedisPoolUtils;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryBean> findAllCategory() {
         /// 首先在redis去查询，如果redis没有数据才在数据库去查询
         Jedis jedis = JedisPoolUtils.getJedis();
-        Set<String> categories = jedis.zrange("category", 0, -1);
+        //Set<String> categories = jedis.zrange("category", 0, -1);
+        Set<Tuple> categories = jedis.zrangeByScoreWithScores("category", 0, -1);
         List<CategoryBean> categoryBeans = null;
         if (categories == null || categories.size() == 0) {
             categoryBeans = dao.findAllCategory();
@@ -34,9 +36,10 @@ public class CategoryServiceImpl implements CategoryService {
             }
         } else {
             categoryBeans = new ArrayList<CategoryBean>();
-            for (String name: categories) {
+            for (Tuple tuple: categories) {
                 CategoryBean categoryBean = new CategoryBean();
-                categoryBean.setCname(name);
+                categoryBean.setCname(tuple.getElement());
+                categoryBean.setCid((int)tuple.getScore());
                 categoryBeans.add(categoryBean);
             }
         }

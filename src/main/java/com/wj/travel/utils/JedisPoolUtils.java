@@ -31,6 +31,7 @@ public class JedisPoolUtils {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(Integer.parseInt(properties.getProperty("maxTotal")));
         config.setMaxIdle(Integer.parseInt(properties.getProperty("maxIdle")));
+        //config.
         jedisPool = new JedisPool(config, properties.getProperty("host"), Integer.parseInt(properties.getProperty("port")));
     }
 

@@ -29,6 +29,7 @@ public class BaseServlet extends HttpServlet {
         // 获取method执行的对象
         try {
             Method method = this.getClass().getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
+            //Method method = this.getClass().getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
             method.setAccessible(true);
             // 方法的执行
             method.invoke(this, req, resp);
