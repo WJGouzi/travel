@@ -17,9 +17,9 @@ import java.util.List;
 public class RoutServiceImpl implements RouteService {
     private RouteDao routeDao = new RouteDaoImpl();
     @Override
-    public PageBean<RouteBean> findRoute(String cid, String currentPage, String pageSize) {
+    public PageBean<RouteBean> findRoute(String cid, String rname, String currentPage, String pageSize) {
         int _cid = Integer.parseInt(cid);
-        int allCount = routeDao.findAllRouteCount(_cid);
+        int allCount = routeDao.findAllRouteCount(_cid, rname);
         PageBean<RouteBean> pageBean = new PageBean<RouteBean>();
         int _currentPage = Integer.parseInt(currentPage);
         pageBean.setTotalCount(allCount);
@@ -36,7 +36,7 @@ public class RoutServiceImpl implements RouteService {
         pageBean.setNumber(_pageSize);
 
         int startIndex = (_currentPage - 1) * _pageSize;
-        List<RouteBean> list = routeDao.findRouteByPage(_cid, startIndex, _pageSize);
+        List<RouteBean> list = routeDao.findRouteByPage(_cid, rname, startIndex, _pageSize);
         pageBean.setBeanList(list);
 
         return pageBean;

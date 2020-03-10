@@ -22,19 +22,19 @@ public class RouteTest {
 
     @Test
     public void findRouteCount() {
-        int c = routeDao.findAllRouteCount(5);
+        int c = routeDao.findAllRouteCount(5, "");
         System.out.println(c);
     }
 
     @Test
     public void findRouteByPage() {
-        List<RouteBean> routeByPage = routeDao.findRouteByPage(5, 2, 10);
+        List<RouteBean> routeByPage = routeDao.findRouteByPage(5, "",2, 10);
         System.out.println(routeByPage);
     }
 
     @Test
     public void findRouteWithService() {
-        PageBean<RouteBean> pb = routeService.findRoute("5", "3", "10");
+        PageBean<RouteBean> pb = routeService.findRoute("5", "", "3", "10");
         System.out.println(pb);
     }
 

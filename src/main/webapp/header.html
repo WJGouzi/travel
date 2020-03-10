@@ -1,6 +1,7 @@
+<script src="js/getParameter.js"></script>
 <script>
-    // 这里去处理user名字展示
     $(function () {
+        // 这里去处理user名字展示
         // 请求的是登录人员的信息
         $.get(
             "userBase/findUserServlet", {},
@@ -27,6 +28,12 @@
 
     })
 
+    // 搜索按钮的点击事件
+    $("#searchButton").click(function () {
+       var searchText = $("#searchInput").val();
+       var cid = getParameter("cid");
+       location.href = "http://www.wangjun.com:9090/travel/route_list.html?cid="+ cid +"&rname="+ searchText;
+    });
 </script>
 
 <!-- 头部 start -->
@@ -54,8 +61,8 @@
                     <a href="/"><img src="images/logo.jpg" alt=""></a>
                 </div>
                 <div class="search">
-                    <input name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
-                    <a href="javascript:;" class="search-button">搜索</a>
+                    <input id="searchInput" name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
+                    <a id="searchButton" href="javascript:;" class="search-button">搜索</a>
                 </div>
                 <div class="hottel">
                     <div class="hot_pic">

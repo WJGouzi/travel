@@ -33,17 +33,21 @@ public class RouteBaseServlet extends BaseServlet {
     protected void findRouteServlet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String cid = request.getParameter("cid");
         String currentPage = request.getParameter("currentPage");
+        String rname = request.getParameter("rname");
+        rname = new String(rname.getBytes("iso-8859-1"),"utf-8");
         if (null == currentPage || "".equals(currentPage)) {
             currentPage = "1";
         }
-        if (null == cid || "".equals(cid)) {
-            cid = "1";
+
+        if (null == cid || "".equals(cid) || "null".equals(cid)) {
+            cid = "0";
         }
+
         String pageSize = request.getParameter("pageSize");
         if (null == pageSize || "".equals(pageSize)) {
             pageSize = "10";
         }
-        PageBean<RouteBean> pageBean = routeService.findRoute(cid, currentPage, pageSize);
+        PageBean<RouteBean> pageBean = routeService.findRoute(cid, rname, currentPage, pageSize);
         writeValue(pageBean, response);
     }
 

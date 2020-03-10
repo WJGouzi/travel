@@ -17,5 +17,5 @@ public interface RouteService {
      * @param pageSize
      * @return
      */
-    PageBean<RouteBean> findRoute(String cid, String currentPage, String pageSize);
+    PageBean<RouteBean> findRoute(String cid, String rname, String currentPage, String pageSize);
 }

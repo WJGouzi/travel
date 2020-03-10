@@ -7,6 +7,7 @@ import com.wj.travel.utils.JDBCUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,16 +21,43 @@ public class RouteDaoImpl implements RouteDao {
     private JdbcTemplate jdbcTemplate = new JdbcTemplate(JDBCUtils.getDataSource());
 
     @Override
-    public int findAllRouteCount(int cid) {
-        String sql = "select count(*) from tab_route where cid = ?";
-        int count = jdbcTemplate.queryForObject(sql, Integer.class, cid);
+    public int findAllRouteCount(int cid, String rname) {
+        //String sql = "select count(*) from tab_route where cid = ?";
+        String sql = " select count(*) from tab_route where 1=1 ";
+        StringBuilder builder = new StringBuilder(sql);
+        List params = new ArrayList();
+        if (cid != 0) {
+            builder.append(" and cid = ? ");
+            params.add(cid);
+        }
+        if (null != rname && !"".equals(rname) && !"null".equals(rname)) {
+            builder.append(" and rname like ? ");
+            params.add("%"+ rname +"%");
+        }
+        sql = builder.toString();
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, params.toArray());
         return count;
     }
 
     @Override
-    public List<RouteBean> findRouteByPage(int cid, int startIndex, int pageSize) {
-        String sql = "select * from tab_route where cid = ? limit ?, ?";
-        List<RouteBean> routeBeans = jdbcTemplate.query(sql, new BeanPropertyRowMapper<RouteBean>(RouteBean.class), cid, startIndex, pageSize);
+    public List<RouteBean> findRouteByPage(int cid, String rname, int startIndex, int pageSize) {
+        //String sql = "select * from tab_route where cid = ? limit ?, ?";
+        String sql = " select * from tab_route where 1 = 1 ";
+        StringBuilder builder = new StringBuilder(sql);
+        List params = new ArrayList();
+        if (cid != 0) {
+            builder.append(" and cid = ? ");
+            params.add(cid);
+        }
+        if (null != rname && !"".equals(rname) && !"null".equals(rname)) {
+            builder.append(" and rname like ? ");
+            params.add("%"+ rname +"%");
+        }
+        builder.append(" limit ?, ? ");
+        params.add(startIndex);
+        params.add(pageSize);
+        sql = builder.toString();
+        List<RouteBean> routeBeans = jdbcTemplate.query(sql, new BeanPropertyRowMapper<RouteBean>(RouteBean.class), params.toArray());
         return routeBeans;
     }
 }
