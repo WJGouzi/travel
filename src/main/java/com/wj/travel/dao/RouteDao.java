@@ -1,5 +1,6 @@
 package com.wj.travel.dao;
 
+import com.wj.travel.domain.LikeBean;
 import com.wj.travel.domain.RouteBean;
 
 import java.util.List;
@@ -34,4 +35,11 @@ public interface RouteDao {
      * @return
      */
     RouteBean findRouteByRid(String rid);
+
+    /**
+     * 根据收藏的情况获得需要的路线
+     * @param likeRoutes
+     * @return
+     */
+    List<RouteBean> findAllRoutes(List<LikeBean> likeRoutes);
 }

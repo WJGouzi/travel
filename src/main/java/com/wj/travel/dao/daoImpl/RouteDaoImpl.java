@@ -1,6 +1,7 @@
 package com.wj.travel.dao.daoImpl;
 
 import com.wj.travel.dao.RouteDao;
+import com.wj.travel.domain.LikeBean;
 import com.wj.travel.domain.PageBean;
 import com.wj.travel.domain.RouteBean;
 import com.wj.travel.utils.JDBCUtils;
@@ -66,6 +67,29 @@ public class RouteDaoImpl implements RouteDao {
         String sql = "select * from tab_route where rid = ?";
         RouteBean routeBean = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<RouteBean>(RouteBean.class), rid);
         return routeBean;
+    }
+
+    @Override
+    public List<RouteBean> findAllRoutes(List<LikeBean> likeRoutes) {
+        try {
+            String sql = " select * from tab_route where ";
+            StringBuilder builder = new StringBuilder(sql);
+            List<Integer> rids = new ArrayList<>();
+            for (int i = 0 ; i < likeRoutes.size(); i++) {
+                LikeBean likeBean = likeRoutes.get(i);
+                if ( i == 0) {
+                    builder.append(" rid = ? ");
+                } else {
+                    builder.append(" or rid = ? ");
+                }
+                rids.add(likeBean.getRid());
+            }
+            List<RouteBean> routeBeans = jdbcTemplate.query(builder.toString(), new BeanPropertyRowMapper<RouteBean>(RouteBean.class), rids.toArray());
+            return routeBeans;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

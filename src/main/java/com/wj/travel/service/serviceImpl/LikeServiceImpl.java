@@ -1,9 +1,13 @@
 package com.wj.travel.service.serviceImpl;
 
 import com.wj.travel.dao.LikeDao;
+import com.wj.travel.dao.RouteDao;
 import com.wj.travel.dao.daoImpl.LikeDaoImpl;
 import com.wj.travel.domain.LikeBean;
+import com.wj.travel.domain.RouteBean;
 import com.wj.travel.service.LikeService;
+
+import java.util.List;
 
 /**
  * @Project : travelPro
@@ -12,7 +16,6 @@ import com.wj.travel.service.LikeService;
  * @Date : 2020/3/11
  */
 public class LikeServiceImpl implements LikeService {
-
     private LikeDao likeDao = new LikeDaoImpl();
 
     @Override
@@ -28,5 +31,11 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public void addLike(int uid, int rid) {
         likeDao.addLike(uid, rid);
+    }
+
+    @Override
+    public List<LikeBean> findAllLikeCollection(Integer uid, Integer startIndex, Integer pageSize) {
+        List<LikeBean> routes = likeDao.findAllLikeByUid(uid, startIndex, pageSize);
+        return routes;
     }
 }

@@ -1,6 +1,9 @@
 package com.wj.travel.dao;
 
 import com.wj.travel.domain.LikeBean;
+import com.wj.travel.domain.RouteBean;
+
+import java.util.List;
 
 /**
  * @Project : travelPro
@@ -30,4 +33,11 @@ public interface LikeDao {
      * @param rid
      */
     void addLike(int uid, int rid);
+
+    /**
+     * 根据uid查询到所有的收藏信息
+     * @param uid
+     * @return
+     */
+    List<LikeBean> findAllLikeByUid(Integer uid, Integer startIndex, Integer pageSize);
 }

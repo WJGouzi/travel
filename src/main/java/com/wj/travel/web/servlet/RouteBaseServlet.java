@@ -1,8 +1,6 @@
 package com.wj.travel.web.servlet;
 
-import com.wj.travel.domain.PageBean;
-import com.wj.travel.domain.RouteBean;
-import com.wj.travel.domain.UserBean;
+import com.wj.travel.domain.*;
 import com.wj.travel.service.LikeService;
 import com.wj.travel.service.RouteService;
 import com.wj.travel.service.serviceImpl.LikeServiceImpl;
@@ -16,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,8 +28,10 @@ public class RouteBaseServlet extends BaseServlet {
 
     private RouteService routeService = new RoutServiceImpl();
     private LikeService likeService = new LikeServiceImpl();
+
     /**
      * 根据cid找寻线路
+     *
      * @param request
      * @param response
      * @throws ServletException
@@ -40,7 +41,7 @@ public class RouteBaseServlet extends BaseServlet {
         String cid = request.getParameter("cid");
         String currentPage = request.getParameter("currentPage");
         String rname = request.getParameter("rname");
-        rname = new String(rname.getBytes("iso-8859-1"),"utf-8");
+        rname = new String(rname.getBytes("iso-8859-1"), "utf-8");
         if (null == currentPage || "".equals(currentPage)) {
             currentPage = "1";
         }
@@ -59,6 +60,7 @@ public class RouteBaseServlet extends BaseServlet {
 
     /**
      * 根据rid获得线路的详情
+     *
      * @param request
      * @param response
      * @throws ServletException
@@ -72,6 +74,7 @@ public class RouteBaseServlet extends BaseServlet {
 
     /**
      * 收藏相关的详情
+     *
      * @param request
      * @param response
      * @throws ServletException
@@ -95,6 +98,7 @@ public class RouteBaseServlet extends BaseServlet {
 
     /**
      * 收藏按钮的点击事件
+     *
      * @param request
      * @param response
      * @throws ServletException
@@ -113,4 +117,36 @@ public class RouteBaseServlet extends BaseServlet {
         likeService.addLike(Integer.parseInt(uid), Integer.parseInt(rid));
     }
 
+    /**
+     * 收藏列表
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void likeCollectionServlet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        UserBean userInfo = (UserBean) session.getAttribute("userInfo");
+        String currentPage = request.getParameter("currentPage");
+        String pageSize = request.getParameter("pageSize");
+        ResultInfo resultInfo = new ResultInfo();
+        if (userInfo == null) {
+            resultInfo.setFlag(false);
+            resultInfo.setErrorMsg("未登陆");
+        } else {
+            if (null == currentPage || "".equals(currentPage)) {
+                currentPage = "1";
+            }
+            if (null == pageSize || "".equals(pageSize)) {
+                pageSize = "4";
+            }
+            Integer _pageSize = Integer.parseInt(pageSize);
+            Integer startIndex = (Integer.parseInt(currentPage) - 1) * _pageSize;
+            List<LikeBean> likeRoutes = likeService.findAllLikeCollection(userInfo.getUid(), startIndex, _pageSize);
+            List<RouteBean> routeBeans = routeService.findAllRoutes(likeRoutes);
+            resultInfo.setFlag(true);
+            resultInfo.setData(routeBeans);
+        }
+        writeValue(resultInfo, response);
+    }
 }

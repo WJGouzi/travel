@@ -2,11 +2,13 @@ package com.wj.travel.dao.daoImpl;
 
 import com.wj.travel.dao.LikeDao;
 import com.wj.travel.domain.LikeBean;
+import com.wj.travel.domain.RouteBean;
 import com.wj.travel.utils.JDBCUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Project : travelPro
@@ -50,4 +52,18 @@ public class LikeDaoImpl implements LikeDao {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public List<LikeBean> findAllLikeByUid(Integer uid, Integer startIndex, Integer pageSize) {
+        try {
+             String sql = "select * from tab_favorite where uid = ? limit ?, ?";
+             List<LikeBean> likeBeans = jdbcTemplate.query(sql, new BeanPropertyRowMapper<LikeBean>(LikeBean.class), uid, startIndex, pageSize);
+             return likeBeans;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

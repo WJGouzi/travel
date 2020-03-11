@@ -8,10 +8,7 @@ import com.wj.travel.dao.daoImpl.LikeDaoImpl;
 import com.wj.travel.dao.daoImpl.RouteDaoImpl;
 import com.wj.travel.dao.daoImpl.RouteImageDaoImpl;
 import com.wj.travel.dao.daoImpl.SellerDaoImpl;
-import com.wj.travel.domain.PageBean;
-import com.wj.travel.domain.RouteBean;
-import com.wj.travel.domain.RouteImageBean;
-import com.wj.travel.domain.SellerBean;
+import com.wj.travel.domain.*;
 import com.wj.travel.service.RouteService;
 
 import java.util.List;
@@ -64,5 +61,15 @@ public class RoutServiceImpl implements RouteService {
         int count = likeDao.countWithRid(Integer.parseInt(rid));
         routeBean.setCount(count);
         return routeBean;
+    }
+
+    @Override
+    public List<RouteBean> findAllRoutes(List<LikeBean> likeRoutes) {
+        if (likeRoutes.size() > 0) {
+            List<RouteBean> routeBeans = routeDao.findAllRoutes(likeRoutes);
+            return routeBeans;
+        } else {
+            return null;
+        }
     }
 }

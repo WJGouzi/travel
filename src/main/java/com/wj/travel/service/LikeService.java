@@ -1,5 +1,10 @@
 package com.wj.travel.service;
 
+import com.wj.travel.domain.LikeBean;
+import com.wj.travel.domain.RouteBean;
+
+import java.util.List;
+
 /**
  * @Project : travelPro
  * @Package : com.wj.travel.service
@@ -21,4 +26,11 @@ public interface LikeService {
      * @param rid
      */
     void addLike(int uid, int rid);
+
+    /**
+     * 根据uid找寻所有搜藏的信息
+     * @param uid
+     * @return
+     */
+    List<LikeBean> findAllLikeCollection(Integer uid, Integer startIndex, Integer pageSize);
 }
