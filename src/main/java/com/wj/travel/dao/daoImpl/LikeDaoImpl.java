@@ -6,6 +6,8 @@ import com.wj.travel.utils.JDBCUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.Date;
+
 /**
  * @Project : travelPro
  * @Package : com.wj.travel.dao.daoImpl
@@ -24,6 +26,28 @@ public class LikeDaoImpl implements LikeDao {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public Integer countWithRid(int rid) {
+        try {
+            String sql = "select count(*) from tab_favorite where rid = ?";
+            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, rid);
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public void addLike(int uid, int rid) {
+        try {
+            String sql = "insert into tab_favorite values(?, ?, ?)";
+            jdbcTemplate.update(sql, rid, new Date(), uid);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,8 +1,10 @@
 package com.wj.travel.service.serviceImpl;
 
+import com.wj.travel.dao.LikeDao;
 import com.wj.travel.dao.RouteDao;
 import com.wj.travel.dao.RouteImageDao;
 import com.wj.travel.dao.SellerDao;
+import com.wj.travel.dao.daoImpl.LikeDaoImpl;
 import com.wj.travel.dao.daoImpl.RouteDaoImpl;
 import com.wj.travel.dao.daoImpl.RouteImageDaoImpl;
 import com.wj.travel.dao.daoImpl.SellerDaoImpl;
@@ -24,6 +26,7 @@ public class RoutServiceImpl implements RouteService {
     private RouteDao routeDao = new RouteDaoImpl();
     private RouteImageDao routeImageDao = new RouteImageDaoImpl();
     private SellerDao sellerDao = new SellerDaoImpl();
+    private LikeDao likeDao = new LikeDaoImpl();
 
     @Override
     public PageBean<RouteBean> findRoute(String cid, String rname, String currentPage, String pageSize) {
@@ -58,6 +61,8 @@ public class RoutServiceImpl implements RouteService {
         routeBean.setRouteImageBeanList(images);
         SellerBean sellerBean = sellerDao.findSellerBySid(routeBean.getSid());
         routeBean.setSellerBean(sellerBean);
+        int count = likeDao.countWithRid(Integer.parseInt(rid));
+        routeBean.setCount(count);
         return routeBean;
     }
 }

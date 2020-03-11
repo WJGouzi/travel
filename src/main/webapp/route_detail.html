@@ -47,9 +47,9 @@
                 <div class="pros_price">
                     <p class="price"><strong>¥<span id="price">2699.00</span></strong><span>起</span></p>
                     <p class="collect">
-                        <a id="like" class="btn"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
-                        <a id="unlike" class="btn already"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
-                        <span>已收藏100次</span>
+                        <a id="like" class="btn" onclick="addLikeAction();"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
+<!--                        <a id="unlike" class="btn already"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>-->
+                        <span>已收藏 <span id="likeCount">0</span>次</span>
                     </p>
                 </div>        
             </div>
@@ -170,6 +170,7 @@
                     $("#sname").html(seller.sname);
                     $("#consphone").html(seller.consphone);
                     $("#address").html(seller.adddress);
+                    $("#likeCount").html(data.count);
 
                     // 图片处理
                     var small_dd = '';
@@ -201,13 +202,31 @@
                 "routeBase/likeDetailServlet", {rid:rid},
                 function (data) {
                     var flag = data.likeFlag;
-                    alert(flag);
-                    $("#like").attr("disable", flag ? "disabled" : "");
-                    $("#unlike").attr("disable", flag ? "" : "disabled");
+                    if (flag) {
+                        $("#like").addClass("already");
+                        $("#like").attr("disable", "disable");
+                        $("#like").removeAttr("onclick");
+                    }
                 }
             );
         }
 
+        // 收藏按钮的点击事件
+        function addLikeAction() {
+            alert('ss');
+            $.get("userBase/findUserServlet",{},function (user) {
+                if (user) {
+                    $.post(
+                        "routeBase/likeActionServlet", {rid: rid},
+                        function (data) {
+                            location.reload();
+                        }
+                    );
+                } else {
+                    location.href = "http://www.wangjun.com:9090/travel/login.html";
+                }
+            });
+        }
     </script>
 </body>
 

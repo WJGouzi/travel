@@ -24,4 +24,9 @@ public class LikeServiceImpl implements LikeService {
             return true;
         }
     }
+
+    @Override
+    public void addLike(int uid, int rid) {
+        likeDao.addLike(uid, rid);
+    }
 }

@@ -14,4 +14,11 @@ public interface LikeService {
      * @return
      */
     boolean queryLikeState(String uid, String rid);
+
+    /**
+     * 添加喜欢
+     * @param uid
+     * @param rid
+     */
+    void addLike(int uid, int rid);
 }

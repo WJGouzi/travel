@@ -16,4 +16,18 @@ public interface LikeDao {
      * @return
      */
     LikeBean queryLikeState(int uid, int rid);
+
+    /**
+     * 计算某条线路的喜欢数量
+     * @param rid
+     * @return
+     */
+    Integer countWithRid(int rid);
+
+    /**
+     * 根据uid和rid添加喜欢的
+     * @param uid
+     * @param rid
+     */
+    void addLike(int uid, int rid);
 }

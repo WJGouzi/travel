@@ -93,4 +93,24 @@ public class RouteBaseServlet extends BaseServlet {
         writeValue(map, response);
     }
 
+    /**
+     * 收藏按钮的点击事件
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void likeActionServlet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String rid = request.getParameter("rid");
+        HttpSession session = request.getSession();
+        UserBean userInfo = (UserBean) session.getAttribute("userInfo");
+        String uid = "";
+        if (userInfo == null) {
+            return;
+        } else {
+            uid += userInfo.getUid();
+        }
+        likeService.addLike(Integer.parseInt(uid), Integer.parseInt(rid));
+    }
+
 }
