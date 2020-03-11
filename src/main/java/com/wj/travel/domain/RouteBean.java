@@ -1,5 +1,7 @@
 package com.wj.travel.domain;
 
+import java.util.List;
+
 /**
  * @Project : travelPro
  * @Package : com.wj.travel.domain
@@ -19,6 +21,10 @@ public class RouteBean {
     private String rimage;
     private Integer sid;
     private String sourceId;
+
+    private CategoryBean categoryBean; //所属分类
+    private List<RouteImageBean> routeImageBeanList;
+    private SellerBean sellerBean;
 
     public RouteBean() {
     }
@@ -54,6 +60,30 @@ public class RouteBean {
                 ", sid=" + sid +
                 ", sourceId='" + sourceId + '\'' +
                 '}';
+    }
+
+    public SellerBean getSellerBean() {
+        return sellerBean;
+    }
+
+    public void setSellerBean(SellerBean sellerBean) {
+        this.sellerBean = sellerBean;
+    }
+
+    public List<RouteImageBean> getRouteImageBeanList() {
+        return routeImageBeanList;
+    }
+
+    public void setRouteImageBeanList(List<RouteImageBean> routeImageBeanList) {
+        this.routeImageBeanList = routeImageBeanList;
+    }
+
+    public CategoryBean getCategoryBean() {
+        return categoryBean;
+    }
+
+    public void setCategoryBean(CategoryBean categoryBean) {
+        this.categoryBean = categoryBean;
     }
 
     public Integer getRid() {

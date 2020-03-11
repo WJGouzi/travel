@@ -27,4 +27,11 @@ public interface RouteDao {
      * @return
      */
     List<RouteBean> findRouteByPage(int cid, String rname, int startIndex, int pageSize);
+
+    /**
+     * 根据rid获得唯一对象
+     * @param rid
+     * @return
+     */
+    RouteBean findRouteByRid(String rid);
 }

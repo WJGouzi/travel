@@ -18,4 +18,11 @@ public interface RouteService {
      * @return
      */
     PageBean<RouteBean> findRoute(String cid, String rname, String currentPage, String pageSize);
+
+    /**
+     * 根据rid获得线路的详情信息
+     * @param rid
+     * @return
+     */
+    RouteBean getRouteDetailByRid(String rid);
 }

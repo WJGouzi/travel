@@ -51,4 +51,17 @@ public class RouteBaseServlet extends BaseServlet {
         writeValue(pageBean, response);
     }
 
+    /**
+     * 根据rid获得线路的详情
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void routeDetailServlet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String rid = request.getParameter("rid");
+        RouteBean routeBean = routeService.getRouteDetailByRid(rid);
+        writeValue(routeBean, response);
+    }
+
 }

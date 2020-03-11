@@ -7,6 +7,20 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/common.css">
     <link rel="stylesheet" type="text/css" href="css/route-detail.css">
+    <script src="js/getParameter.js"></script>
+    <script>
+        var rid = getParameter('rid');
+        alert(rid);
+        $(function () {
+            $.get(
+                "routeBase/routeDetailServlet", {rid:rid},
+                function (data) {
+
+                }
+            );
+        });
+    </script>
+
 </head>
 
 <body>
@@ -69,7 +83,6 @@
                     <p class="price"><strong>¥2699.00</strong><span>起</span></p>
                     <p class="collect">
                         <a class="btn"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
-
                         <a  class="btn already" disabled="disabled"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
                         <span>已收藏100次</span>
                     </p>

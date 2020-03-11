@@ -1,9 +1,15 @@
 package com.wj.travel.service.serviceImpl;
 
 import com.wj.travel.dao.RouteDao;
+import com.wj.travel.dao.RouteImageDao;
+import com.wj.travel.dao.SellerDao;
 import com.wj.travel.dao.daoImpl.RouteDaoImpl;
+import com.wj.travel.dao.daoImpl.RouteImageDaoImpl;
+import com.wj.travel.dao.daoImpl.SellerDaoImpl;
 import com.wj.travel.domain.PageBean;
 import com.wj.travel.domain.RouteBean;
+import com.wj.travel.domain.RouteImageBean;
+import com.wj.travel.domain.SellerBean;
 import com.wj.travel.service.RouteService;
 
 import java.util.List;
@@ -16,6 +22,9 @@ import java.util.List;
  */
 public class RoutServiceImpl implements RouteService {
     private RouteDao routeDao = new RouteDaoImpl();
+    private RouteImageDao routeImageDao = new RouteImageDaoImpl();
+    private SellerDao sellerDao = new SellerDaoImpl();
+
     @Override
     public PageBean<RouteBean> findRoute(String cid, String rname, String currentPage, String pageSize) {
         int _cid = Integer.parseInt(cid);
@@ -40,5 +49,15 @@ public class RoutServiceImpl implements RouteService {
         pageBean.setBeanList(list);
 
         return pageBean;
+    }
+
+    @Override
+    public RouteBean getRouteDetailByRid(String rid) {
+        RouteBean routeBean = routeDao.findRouteByRid(rid);
+        List<RouteImageBean> images = routeImageDao.findRouteImageByRid(routeBean.getRid() + "");
+        routeBean.setRouteImageBeanList(images);
+        SellerBean sellerBean = sellerDao.findSellerBySid(routeBean.getSid());
+        routeBean.setSellerBean(sellerBean);
+        return routeBean;
     }
 }
