@@ -65,5 +65,15 @@ public class LikeDaoImpl implements LikeDao {
         }
     }
 
-
+    @Override
+    public Integer findAllLikeByUid(Integer uid) {
+        try {
+            String sql = "select count(*) from tab_favorite where uid = ?";
+            Integer totalCount = jdbcTemplate.queryForObject(sql, Integer.class, uid);
+            return totalCount;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

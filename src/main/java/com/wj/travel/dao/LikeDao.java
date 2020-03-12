@@ -40,4 +40,11 @@ public interface LikeDao {
      * @return
      */
     List<LikeBean> findAllLikeByUid(Integer uid, Integer startIndex, Integer pageSize);
+
+    /**
+     * 根据uid查询收藏的数量
+     * @param uid
+     * @return
+     */
+    Integer findAllLikeByUid(Integer uid);
 }

@@ -145,7 +145,16 @@ public class RouteBaseServlet extends BaseServlet {
             List<LikeBean> likeRoutes = likeService.findAllLikeCollection(userInfo.getUid(), startIndex, _pageSize);
             List<RouteBean> routeBeans = routeService.findAllRoutes(likeRoutes);
             resultInfo.setFlag(true);
-            resultInfo.setData(routeBeans);
+            // 设置分页信息
+            PageBean pageBean = new PageBean();
+            pageBean.setCurrentPage(Integer.parseInt(currentPage));
+            pageBean.setNumber(_pageSize);
+            Integer totalCount = likeService.findAllLikeByUid(userInfo.getUid());
+            pageBean.setTotalCount(totalCount);
+            int totalPage = new Double(Math.ceil(new Double(totalCount) / new Double(_pageSize))).intValue();
+            pageBean.setTotalPage(totalPage);
+            pageBean.setBeanList(routeBeans);
+            resultInfo.setData(pageBean);
         }
         writeValue(resultInfo, response);
     }

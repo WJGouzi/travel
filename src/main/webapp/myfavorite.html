@@ -17,29 +17,26 @@
         <script src="js/jquery-3.3.1.js"></script>
 
         <script>
-
-            /*
-            *                   <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>*/
+            
             $(function () {
-                // 获取收藏的信息
+                loadLikeInfo();
+            });
+
+            // 获取收藏的信息
+            function loadLikeInfo(currentPage, pageSize) {
                 $.get(
-                    "routeBase/likeCollectionServlet", {}, function (resultInfo) {
-                        if (resultInfo.flag) {
-                            var divs = resultInfo.data;
+                    "routeBase/likeCollectionServlet", {currentPage: currentPage, pageSize: pageSize}, function (resultInfo) {
+                        if (!resultInfo.flag) {
+                            location.href = "http://www.wangjun.com:9090/travel/login.html";
+                        } else {
+                            var pageInfo = resultInfo.data;
+                            var divs = pageInfo.beanList;
+                            // 设置图片内容
                             var col_divs = '';
                             for (var index in divs) {
                                 var divInfo = divs[index];
-                                debugger
                                 col_divs += '<div class="col-md-3">' +
-                                            '   <a href="route_detail.html">' +
+                                            '   <a href="route_detail.html?rid='+ divInfo.rid +'">' +
                                             '       <img src="'+ divInfo.rimage +'" alt="">' +
                                             '       <div class="has_border">' +
                                             '            <h3>'+ divInfo.rname +'</h3>' +
@@ -49,13 +46,48 @@
                                             '</div>';
                             }
                             $("#collectionRoute").html(col_divs);
-                        } else {
-                            location.href = "http://www.wangjun.com:9090/travel/login.html";
+
+                            // 设置页码
+                            var totalPage = pageInfo.totalPage;
+                            var currentPage = pageInfo.currentPage;
+                            var page_li = '';
+                            page_li += '<li onclick="javascript:loadLikeInfo(1)"><a href="">首页</a></li>';
+                            var previousPage = currentPage - 1 <= 0 ? 1 : currentPage - 1;
+                            page_li += '<li class="threeword" onclick="loadLikeInfo('+ previousPage +')"><a href="javascript:;">上一页</a></li>';
+                            var begin;
+                            var end;
+                            if (totalPage < 5) {
+                                begin = 1;
+                                end = totalPage;
+                            } else {
+                                begin = currentPage - 2;
+                                end = currentPage + 2;
+                                if (begin <= 0) {
+                                    begin = 1;
+                                    end = begin + 4;
+                                }
+                                if (end >= totalPage) {
+                                    end = totalPage;
+                                    begin = end - 4;
+                                }
+                            }
+                            for (var index = begin; index <= end; index++) {
+                                if (currentPage == index) {
+                                    page_li += '<li class="curPage"><a href="#">'+ index +'</a></li>';
+                                } else {
+                                    page_li += '<li onclick="loadLikeInfo('+ index +')"><a href="javascript:;">'+ index +'</a></li>';
+                                }
+                            }
+                            var nextPage = currentPage + 1 >= totalPage ? totalPage : currentPage + 1;
+                            page_li += '<li class="threeword" onclick="loadLikeInfo('+ nextPage +')"><a href="javascript:;">下一页</a></li>';
+                            page_li += '<li class="threeword" onclick="loadLikeInfo('+ totalPage +')"><a href="javascript:;">末页</a></li>';
+                            $("#pageInfo").html(page_li);
+                            window.scrollTo(0, 0);
                         }
                     }
                 );
-
-            });
+            }
+            
         </script>
     </head>
     <body>
@@ -125,21 +157,21 @@
                     </div>
                 </div>
                 <div class="pageNum">
-                    <ul>
-                        <li><a href="">首页</a></li>
-                        <li class="threeword"><a href="#">上一页</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">6</a></li>
-                        <li><a href="#">7</a></li>
-                        <li><a href="#">8</a></li>
-                        <li><a href="#">9</a></li>
-                        <li><a href="#">10</a></li>
-                        <li class="threeword"><a href="javascript:;">下一页</a></li>
-                        <li class="threeword"><a href="javascript:;">末页</a></li>
+                    <ul id="pageInfo">
+<!--                        <li><a href="">首页</a></li>-->
+<!--                        <li class="threeword"><a href="#">上一页</a></li>-->
+<!--                        <li><a href="#">1</a></li>-->
+<!--                        <li><a href="#">2</a></li>-->
+<!--                        <li><a href="#">3</a></li>-->
+<!--                        <li><a href="#">4</a></li>-->
+<!--                        <li><a href="#">5</a></li>-->
+<!--                        <li><a href="#">6</a></li>-->
+<!--                        <li><a href="#">7</a></li>-->
+<!--                        <li><a href="#">8</a></li>-->
+<!--                        <li><a href="#">9</a></li>-->
+<!--                        <li><a href="#">10</a></li>-->
+<!--                        <li class="threeword"><a href="javascript:;">下一页</a></li>-->
+<!--                        <li class="threeword"><a href="javascript:;">末页</a></li>-->
                     </ul>
                 </div>
             </section>                      

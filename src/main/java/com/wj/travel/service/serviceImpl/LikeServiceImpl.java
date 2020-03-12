@@ -38,4 +38,9 @@ public class LikeServiceImpl implements LikeService {
         List<LikeBean> routes = likeDao.findAllLikeByUid(uid, startIndex, pageSize);
         return routes;
     }
+
+    @Override
+    public Integer findAllLikeByUid(Integer uid) {
+        return likeDao.findAllLikeByUid(uid);
+    }
 }

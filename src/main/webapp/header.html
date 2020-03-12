@@ -6,14 +6,25 @@
         $.get(
             "userBase/findUserServlet", {},
             function (data) {
-                var info = "欢迎您" + data.name;
+                var info;
+                if (data) {
+                    info = "欢迎您" + data.name;
+                    $("#loginButton").css("display", "none");
+                    $("#registerButton").css("display", "none");
+                    $("#logoutButton").css("display", "");
+                } else {
+                    info = "欢迎您";
+                    $("#loginButton").css("display", "");
+                    $("#registerButton").css("display", "");
+                    $("#logoutButton").css("display", "none");
+                }
                 $("#username").html(info);
             }
         );
 
         // 请求的是header中类别的信息
-        $.get(
-            "categoryBase/findAllCategoryServlet", {},
+        $.post(
+            "categoryBase/findAllCategoryServlet?time=" + (new Date()).getTime(), {},
             function (data) {
                 var lis = '<li class=\"nav-active\"><a href=\"index.html\">首页</a></li>\n';
                 for (var index in data) {
@@ -25,7 +36,6 @@
                 $("#category").html(lis);
             }
         );
-
     })
 
     // 搜索按钮的点击事件
@@ -44,15 +54,14 @@
         <div class="shortcut">
             <!-- 未登录状态  -->
             <div class="login_out">
-                <a href="login.html">登录</a>
-                <a href="register.html">注册</a>
+                <a id="loginButton" href="login.html">登录</a>
+                <a id="registerButton" href="register.html">注册</a>
             </div>
             <!-- 登录状态  -->
             <div class="login">
-            	
                 <span id="username"></span>
                 <a href="myfavorite.html" class="collection">我的收藏</a>
-                <a href="javascript:location.href='userBase/logoutServlet';">退出</a>
+                <a id="logoutButton" href="javascript:location.href='userBase/logoutServlet';">退出</a>
             </div>
         </div>
         <div class="header_wrap">
@@ -90,5 +99,8 @@
 <!--            <li><a href="route_list.html">抱团定制</a></li>-->
 <!--            <li><a href="route_list.html">全球自由行</a></li>-->
 <!--            <li><a href="favoriterank.html">收藏排行榜</a></li>-->
+
         </ul>
     </div>
+
+
